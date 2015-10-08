@@ -1,5 +1,6 @@
 local socket = require( "socket" )
-local Time = require( "modules/time" )
+package.cpath = "./modules/?.so"
+local Time = require( "time" )
 -- .getMiliseconds()
 -- .getMicroSeconds()
 -- .getTime()
