@@ -1,24 +1,25 @@
 EventQueue = require( "eventqueue" )
 
-local function repeater( input )
+local function repeater( init )
    while true do
-      print( input )
+      print( init )
       coroutine.yield( 2000 ) -- repeat every two seconds
    end
 end
 
-local thread2 = coroutine.create( repeater )
-local b = EventQueue.event:new( thread2 )
+local wrap = coroutine.wrap( repeater )
+local b = EventQueue.event:new( wrap )
 b:args( "beep, its been 2 seconds" )
 b.execute_at = EventQueue.time() + 2000
 b.name = "repeater"
 
 local function myprint( myinput )
    print( myinput )
+   return true
 end
 
-local thread1 = coroutine.create( myprint )
-local a = EventQueue.event:new( thread1 )
+local func = myprint
+local a = EventQueue.event:new( func )
 a:args( "hi, there" )
 a.name = "simple print"
 

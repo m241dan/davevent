@@ -20,17 +20,21 @@ EQ.default_tick = 250 -- 250 = .25 seconds || 250 milliseconds
 
 EQ.event = {}
 
----------------------------------------------
--- EventQueue.event Methods                --
--- Written by Daniel R. Koris(aka Davenge) --
----------------------------------------------
+---------------------------------------------------
+-- EventQueue.event Methods                      --
+-- Written by Daniel R. Koris(aka Davenge)       --
+---------------------------------------------------
 
-function EQ.event:new( thread )
+---------------------------------------------------
+-- Event execute functions or wrapped coroutines --
+-- You can add args with :args()                 --
+---------------------------------------------------
+function EQ.event:new( func )
    local event = {}
 
    setmetatable( event, self )
    self.__index = self
-   event.routine = thread
+   event.func = func
    event.execute_at = EQ.time() -- by default events execute asap
    event.queued = false
    return event
@@ -41,7 +45,7 @@ function EQ.event:args( ... )
 end
 
 ---------------------------------------------
--- EventQueue Module Functions            --
+-- EventQueue Module Functions             --
 -- Written by Daniel R. Koris(aka Davenge) --
 ---------------------------------------------
 
@@ -113,16 +117,15 @@ function EQ.main()
          -- non-dead coroutine events should return a time at which to "requeue" in milliseconds
          local requeue_at
          if( not CEvent.args ) then
-            _, requeue_at = assert( coroutine.resume( CEvent.routine ) )
+            requeue_at = assert( CEvent.func() )
          else
-            _, requeue_at = assert( coroutine.resume( CEvent.routine, table.unpack( CEvent.args ) ) )
+            print( CEvent.name )
+            requeue_at = assert( CEvent.func( table.unpack( CEvent.args ) ) )
          end
+
          table.remove( EQ.queue, 1 ) 
-         print( CEvent.name )
-         print( EQ.time() )
          print( "Size of Event Queue = " .. #EQ.queue )
-         if( coroutine.status( CEvent.routine ) == "dead" or type( requeue_at ) ~= "number" ) then
-            print( "removing event with dead thread." )
+         if( type( requeue_at ) ~= "number" ) then
             CEvent.queued = false
          else
             CEvent.execute_at = EQ.time() + requeue_at -- requeue time will be current time in milliseconds + the millseconds returned by the yield
