@@ -27,7 +27,7 @@ EQ.event = {}
 -- Event execute functions or wrapped coroutines --
 -- You can add args with :args()                 --
 ---------------------------------------------------
-function EQ.event:new( func, time, args )
+function EQ.event:new( func, time, args, name )
    local event = {}
 
    setmetatable( event, self )
@@ -36,6 +36,7 @@ function EQ.event:new( func, time, args )
    event.execute_at = time or EQ.time() -- by default events execute asap
    event.queued = false
    event.args = args
+   event.name = name
    return event
 end
 
