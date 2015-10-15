@@ -40,7 +40,7 @@ function EQ.event:new( func )
    return event
 end
 
-function EQ.event:args( ... )
+function EQ.event:setArgs( ... )
    self.args = { ... }
 end
 
@@ -119,7 +119,7 @@ function EQ.main()
       if( CEvent.execute_at <= EQ.time() ) then
          -- non-dead coroutine events should return a time at which to "requeue" in milliseconds
          local requeue_at
-         if( CEvent.args == nil ) then
+         if( not CEvent.args ) then
             requeue_at = assert( CEvent.func() )
          else
             requeue_at = assert( CEvent.func( table.unpack( CEvent.args ) ) )
