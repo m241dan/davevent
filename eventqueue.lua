@@ -15,7 +15,6 @@ local EQ = {}
 
 EQ.queue = {}
 EQ.running = false
-EQ.default_tick = 250 -- 250 = .25 seconds || 250 milliseconds
 
 EQ.event = {}
 
@@ -28,15 +27,15 @@ EQ.event = {}
 -- Event execute functions or wrapped coroutines --
 -- You can add args with :args()                 --
 ---------------------------------------------------
-function EQ.event:new( func )
+function EQ.event:new( func, time, args )
    local event = {}
 
    setmetatable( event, self )
    self.__index = self
    event.func = func
-   event.execute_at = EQ.time() -- by default events execute asap
+   event.execute_at = time or EQ.time() -- by default events execute asap
    event.queued = false
-   event.args = nil
+   event.args = args
    return event
 end
 
@@ -62,6 +61,7 @@ end
 
 EQ.second = 1000
 EQ.milisecond = 1
+EQ.default_tick = 250 -- 250 = .25 seconds || 250 milliseconds
 
 -- eventqueuetest_one tests the insert||insertSort code
 
