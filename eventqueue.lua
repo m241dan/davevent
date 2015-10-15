@@ -33,7 +33,7 @@ function EQ.event:new( func, time, args, name )
    setmetatable( event, self )
    self.__index = self
    event.func = func
-   event.execute_at = time or EQ.time() -- by default events execute asap
+   event.execute_at = time and EQ.time() + time or EQ.time() -- by default events execute asap
    event.queued = false
    event.args = args
    event.name = name
