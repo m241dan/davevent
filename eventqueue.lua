@@ -36,6 +36,7 @@ function EQ.event:new( func )
    event.func = func
    event.execute_at = EQ.time() -- by default events execute asap
    event.queued = false
+   event.args = nil
    return event
 end
 
@@ -118,15 +119,13 @@ function EQ.main()
       if( CEvent.execute_at <= EQ.time() ) then
          -- non-dead coroutine events should return a time at which to "requeue" in milliseconds
          local requeue_at
-         if( not CEvent.args ) then
+         if( CEvent.args == nil ) then
             requeue_at = assert( CEvent.func() )
          else
-            print( CEvent.name )
             requeue_at = assert( CEvent.func( table.unpack( CEvent.args ) ) )
          end
 
          table.remove( EQ.queue, 1 ) 
-         print( "Size of Event Queue = " .. #EQ.queue )
          if( type( requeue_at ) ~= "number" ) then
             CEvent.queued = false
          else
