@@ -1,6 +1,8 @@
 EventQueue = require( "eventqueue" )
 Event = EventQueue.event;
 
+print( EventQueue.time() )
+
 a = Event:new( nil )
 b = Event:new( nil )
 c = Event:new( nil )

@@ -59,6 +59,9 @@ function EQ.time()
    return ( Time.getMiliseconds() * 1000 )
 end
 
+EQ.second = 1000
+EQ.milisecond = 1
+
 -- eventqueuetest_one tests the insert||insertSort code
 
 function EQ.insertSort( event, index )
@@ -141,7 +144,5 @@ function EQ.run()
    EQ.running = true;
    EQ.main()
 end
-
-
 
 return EQ
