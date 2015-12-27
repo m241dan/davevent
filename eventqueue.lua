@@ -109,7 +109,6 @@ end
 function EQ.main()
 
    while EQ.running do
-      ::mainloop::
       if( not EQ.queue[1] ) then -- should never have an empty queue, but if we do, its time to end
          print( "Program Exiting, nothing in Queue." )
          return false
@@ -133,7 +132,6 @@ function EQ.main()
             CEvent.execute_at = EQ.time() + requeue_at -- requeue time will be current time in milliseconds + the millseconds returned by the yield
             EQ.insert( CEvent ) 
          end
-         goto mainloop
       else
          socket.sleep( ( EQ.queue[1].execute_at - EQ.time() ) / 1000 )
       end
