@@ -126,7 +126,7 @@ function EQ.main()
          end
 
          table.remove( EQ.queue, 1 ) 
-         if( type( requeue_at ) ~= "number" ) then
+         if( not requeue_at OR type( requeue_at ) ~= "number" ) then
             CEvent.queued = false
          else
             CEvent.execute_at = EQ.time() + requeue_at -- requeue time will be current time in milliseconds + the millseconds returned by the yield
