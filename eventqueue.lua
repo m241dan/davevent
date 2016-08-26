@@ -139,8 +139,12 @@ function EQ.main()
 end 
 
 function EQ.run()
-   EQ.running = true;
+   EQ.running = true
    EQ.main()
-end
+end;
+
+function EQ.stop()
+   EQ.running = false
+end;
 
 return EQ
